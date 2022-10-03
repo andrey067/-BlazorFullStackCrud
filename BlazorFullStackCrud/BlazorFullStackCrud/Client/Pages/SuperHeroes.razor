@@ -1,0 +1,46 @@
+﻿@page "/superheroes"
+@inject ISuperHeroServices superHeroServices;
+@inject NavigationManager navigationManager;
+<PageTitle>Super Heroes</PageTitle>
+
+<h3>Super Heroes</h3>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hero Name</th>
+            <th>Comic</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hero in superHeroServices.Heroes)
+        {
+            <tr>
+                <td>@hero.HeroName</td>
+                <td>@hero.LastName</td>
+                <td>@hero.HeroName</td>
+                <td>@hero.Comic.Name</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(() => ShowHero(hero.Id))">
+                        <i class="io  io-pencil"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await superHeroServices.GetSuperHeroes();
+    }
+
+    void ShowHero(int Id)
+    {
+        navigationManager.NavigateTo($"hero/{Id}");
+    }
+}
